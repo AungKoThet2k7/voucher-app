@@ -1,8 +1,20 @@
 import React from "react";
 import { HiOutlineTrash, HiSearch } from "react-icons/hi";
 import { HiOutlinePencil } from "react-icons/hi2";
+import useSWR from "swr";
+import ProductListSkeletonLoader from "./ProductListSkeletonLoader";
+import ProductRow from "./ProductRow";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const ProductList = () => {
+  const { data, error, isLoading } = useSWR(
+    import.meta.env.VITE_API_URL + "/products",
+    fetcher
+  );
+
+  // if (isLoading) return <div>Loading...</div>;
+
   return (
     <div>
       <form className="flex items-center justify-between mb-3">
@@ -48,44 +60,11 @@ const ProductList = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="odd:bg-white  even:bg-gray-50  border-b border-gray-200 hidden last:table-row">
-              <td colSpan={5} className="px-6 py-4 text-center">
-                There is no Product yet
-              </td>
-            </tr>
-            <tr className="odd:bg-white  even:bg-gray-50  border-b border-gray-200">
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                1
-              </th>
-              <td className="px-6 py-4">Apple MacBook Pro 17"</td>
-              <td className="px-6 py-4">$2999</td>
-              <td className="px-6 py-4">
-                <p>{new Date().toLocaleDateString()}</p>
-                <p>{new Date().toLocaleTimeString()}</p>
-              </td>
-              <td className="px-6 py-4 text-end">
-                <div
-                  className="inline-flex shadow-xs border border-gray-500"
-                  role="group"
-                >
-                  <button
-                    type="button"
-                    className="py-2 px-3 text-sm font-medium text-sky-500 bg-white hover:bg-gray-200 hover:text-sky-700"
-                  >
-                    <HiOutlinePencil />
-                  </button>
-                  <button
-                    type="button"
-                    className="py-2 px-3 text-sm font-medium text-red-500 bg-white hover:bg-gray-200 hover:text-red-700"
-                  >
-                    <HiOutlineTrash />
-                  </button>
-                </div>
-              </td>
-            </tr>
+            {isLoading ? (
+              <ProductListSkeletonLoader />
+            ) : (
+              data.map((product) => <ProductRow key={product.id} product={product} />)
+            )}
           </tbody>
         </table>
       </div>

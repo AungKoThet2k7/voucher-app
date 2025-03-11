@@ -4,6 +4,7 @@ import { HiOutlinePencil } from "react-icons/hi2";
 import useSWR from "swr";
 import ProductListSkeletonLoader from "./ProductListSkeletonLoader";
 import ProductRow from "./ProductRow";
+import { Link } from "react-router-dom";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -17,7 +18,7 @@ const ProductList = () => {
 
   return (
     <div>
-      <form className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3">
         <div className="relative max-w-sm">
           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <HiSearch className="text-gray-500" />
@@ -27,16 +28,15 @@ const ProductList = () => {
             id="simple-search"
             className="bg-gray-50 focus-visible:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full ps-10 p-2.5  "
             placeholder="Search Product"
-            required
           />
         </div>
-        <button
-          type="submit"
+        <Link
+          to="/product/create"
           className="p-2.5 ms-2 text-sm font-medium text-white bg-sky-500 rounded-lg border border-sky-500 hover:bg-sky-700"
         >
           Add new Product
-        </button>
-      </form>
+        </Link>
+      </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
@@ -63,7 +63,9 @@ const ProductList = () => {
             {isLoading ? (
               <ProductListSkeletonLoader />
             ) : (
-              data.map((product) => <ProductRow key={product.id} product={product} />)
+              data.map((product) => (
+                <ProductRow key={product.id} product={product} />
+              ))
             )}
           </tbody>
         </table>

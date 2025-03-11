@@ -6,7 +6,7 @@ import ProductList from "../components/ProductList";
 const ProductPage = () => {
   return <section>
     <Container>
-      <Breadcrumb currentpageTitle={"Product"} />
+      <Breadcrumb currentpageTitle={"Product Module"} />
       <ProductList />
     </Container>
   </section>;

@@ -1,10 +1,10 @@
 {
   "products": [
     {
-      "id": 1,
       "name": "Performance Optimization",
-      "price": 100,
-      "created_at": "2025-03-01T08:45:04Z"
+      "price": "100",
+      "created_at": "2025-03-12T03:37:00.485Z",
+      "id": 1
     },
     {
       "id": 2,
@@ -59,6 +59,131 @@
       "name": "API Integration Service",
       "price": 700,
       "created_at": "2025-03-10T11:00:00Z"
+    }
+  ],
+  "vouchers": [
+    {
+      "voucher_id": "INV-245894-3418",
+      "customer_name": "Kyaw Kyaw",
+      "customer_email": "kyaw@gmail.com",
+      "sale_date": "2025-03-14",
+      "all_correct": true,
+      "records": [
+        {
+          "id": 1741922257812,
+          "product": {
+            "id": 3,
+            "name": "E-commerce Development",
+            "price": 1200,
+            "created_at": "2025-03-03T09:15:00Z"
+          },
+          "quantity": "3",
+          "cost": 3600,
+          "created_at": "2025-03-14T03:17:37.812Z"
+        },
+        {
+          "id": 1741922259290,
+          "product": {
+            "id": 2,
+            "name": "Website Design Package",
+            "price": 500,
+            "created_at": "2025-03-02T09:00:00Z"
+          },
+          "quantity": "5",
+          "cost": 2500,
+          "created_at": "2025-03-14T03:17:39.290Z"
+        }
+      ],
+      "total": 6100,
+      "tax": 427.00000000000006,
+      "netTotal": 6527,
+      "id": 1
+    },
+    {
+      "voucher_id": "INV-263140-8085",
+      "customer_name": "Zaw Zaw",
+      "customer_email": "Zaw@gmail.com",
+      "sale_date": "2025-03-14",
+      "all_correct": true,
+      "records": [
+        {
+          "id": 1741922297826,
+          "product": {
+            "id": 6,
+            "name": "WordPress Development",
+            "price": 800,
+            "created_at": "2025-03-06T10:00:00Z"
+          },
+          "quantity": "2",
+          "cost": 1600,
+          "created_at": "2025-03-14T03:18:17.826Z"
+        },
+        {
+          "id": 1741922304154,
+          "product": {
+            "id": 10,
+            "name": "API Integration Service",
+            "price": 700,
+            "created_at": "2025-03-10T11:00:00Z"
+          },
+          "quantity": "1",
+          "cost": 700,
+          "created_at": "2025-03-14T03:18:24.154Z"
+        }
+      ],
+      "total": 2300,
+      "tax": 161.00000000000003,
+      "netTotal": 2461,
+      "id": 2
+    },
+    {
+      "voucher_id": "INV-307511-1182",
+      "customer_name": "Su Su",
+      "customer_email": "su@gmail.com",
+      "sale_date": "2025-03-14",
+      "all_correct": true,
+      "records": [
+        {
+          "id": 1741922325363,
+          "product": {
+            "id": 5,
+            "name": "Custom Web Application",
+            "price": 2500,
+            "created_at": "2025-03-05T09:45:00Z"
+          },
+          "quantity": "1",
+          "cost": 2500,
+          "created_at": "2025-03-14T03:18:45.363Z"
+        },
+        {
+          "id": 1741922329722,
+          "product": {
+            "id": 8,
+            "name": "UI/UX Design Service",
+            "price": 600,
+            "created_at": "2025-03-08T10:30:00Z"
+          },
+          "quantity": "2",
+          "cost": 1200,
+          "created_at": "2025-03-14T03:18:49.722Z"
+        },
+        {
+          "id": 1741922335978,
+          "product": {
+            "id": 2,
+            "name": "Website Design Package",
+            "price": 500,
+            "created_at": "2025-03-02T09:00:00Z"
+          },
+          "quantity": "1",
+          "cost": 500,
+          "created_at": "2025-03-14T03:18:55.978Z"
+        }
+      ],
+      "total": 4200,
+      "tax": 294,
+      "netTotal": 4494,
+      "id": 3
     }
   ]
 }

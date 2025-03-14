@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Container from "./Container";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { lineSpinner } from "ldrs";
@@ -13,22 +13,32 @@ const ProductCreateCard = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm();
 
   const [isSending, setIsSending] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleCreateProduct = async (data) => {
     setIsSending(true);
-    data.created_at = new Date().toISOString();
     await fetch(import.meta.env.VITE_API_URL + "/products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        name: data.name,
+        price: data.price,
+        created_at: new Date().toISOString(),
+      }),
     });
     setIsSending(false);
+
+    if (data.back_to_product) {
+      navigate("/product");
+    }
+
     reset();
     toast.success("Product created successfully");
     // console.log(data);
@@ -54,7 +64,7 @@ const ProductCreateCard = () => {
                 {...register("name", {
                   required: true,
                   minLength: 3,
-                  maxLength: 20,
+                  maxLength: 30,
                 })}
                 type="text"
                 id="product_name"
@@ -140,6 +150,22 @@ const ProductCreateCard = () => {
                   Please make sure all field are correct
                 </p>
               )}
+            </div>
+
+            <div className="flex items-center gap-2 mb-3">
+              <input
+                {...register("back_to_product", { required: true })}
+                id="back_to_product"
+                type="checkbox"
+                defaultValue
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm"
+              />
+              <label
+                htmlFor="back_to_product"
+                className="text-sm font-medium text-gray-900"
+              >
+                Back to product module after created
+              </label>
             </div>
 
             <div className="flex gap-3">

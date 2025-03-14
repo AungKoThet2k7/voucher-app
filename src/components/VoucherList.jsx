@@ -2,8 +2,17 @@ import React from "react";
 import { HiOutlineTrash, HiSearch } from "react-icons/hi";
 import { HiOutlinePencil } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import useSWR from "swr";
+import VoucherListRow from "./VoucherListRow";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const VoucherList = () => {
+  const { data, error, isLoading } = useSWR(
+    import.meta.env.VITE_API_URL + "/vouchers",
+    fetcher
+  );
+
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -19,7 +28,7 @@ const VoucherList = () => {
           />
         </div>
         <Link
-        to={"/sale"}
+          to={"/sale"}
           className="p-2.5 ms-2 text-sm font-medium text-white bg-sky-500 rounded-lg border border-sky-500 hover:bg-sky-700"
         >
           Create Sale
@@ -53,39 +62,10 @@ const VoucherList = () => {
                 There is no Voucher yet
               </td>
             </tr>
-            <tr className="odd:bg-white  even:bg-gray-50  border-b border-gray-200">
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                1
-              </th>
-              <td className="px-6 py-4">Kyaw Kyaw</td>
-              <td className="px-6 py-4">kyaw@gmail.com</td>
-              <td className="px-6 py-4">
-                <p>{new Date().toLocaleDateString()}</p>
-                <p>{new Date().toLocaleTimeString()}</p>
-              </td>
-              <td className="px-6 py-4 text-end">
-                <div
-                  className="inline-flex shadow-xs border border-gray-500"
-                  role="group"
-                >
-                  <button
-                    type="button"
-                    className="py-2 px-3 text-sm font-medium text-sky-500 bg-white hover:bg-gray-200 hover:text-sky-700"
-                  >
-                    <HiOutlinePencil />
-                  </button>
-                  <button
-                    type="button"
-                    className="py-2 px-3 text-sm font-medium text-red-500 bg-white hover:bg-gray-200 hover:text-red-700"
-                  >
-                    <HiOutlineTrash />
-                  </button>
-                </div>
-              </td>
-            </tr>
+            {!isLoading &&
+              data.map((voucher, index) => (
+                <VoucherListRow key={index} voucher={voucher} />
+              ))}
           </tbody>
         </table>
       </div>

@@ -1,28 +1,18 @@
 import React, { useState } from "react";
-import { HiOutlineTrash, HiSearch } from "react-icons/hi";
+import { HiOutlineTrash } from "react-icons/hi";
 import { HiOutlinePencil } from "react-icons/hi2";
 import { useSWRConfig } from "swr";
 import { lineSpinner } from "ldrs";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import ShowDate from "./showDate";
 
 lineSpinner.register();
 
 const ProductRow = ({ product: { id, name, price, created_at } }) => {
-  const date = new Date(created_at);
-
   const { mutate } = useSWRConfig();
 
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const currentDate = date.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-  const currentTime = date.toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -31,7 +21,9 @@ const ProductRow = ({ product: { id, name, price, created_at } }) => {
       method: "DELETE",
     });
 
+    toast.success("Product deleted successfully");
     mutate(import.meta.env.VITE_API_URL + "/products");
+    setIsDeleting(false);
   };
 
   return (
@@ -45,20 +37,20 @@ const ProductRow = ({ product: { id, name, price, created_at } }) => {
       <td className="px-6 py-4">{name}</td>
       <td className="px-6 py-4">{price}</td>
       <td className="px-6 py-4 text-end">
-        <p>{currentDate}</p>
-        <p>{currentTime}</p>
+        <ShowDate timestamp={created_at} />
       </td>
       <td className="px-6 py-4 text-end">
         <div
           className="inline-flex shadow-xs border border-gray-500"
           role="group"
         >
-          <button
+          <Link
+            to={`/product/edit/${id}`}
             type="button"
             className="size-8 flex justify-center items-center text-sm font-medium text-sky-500 bg-white hover:bg-gray-200 hover:text-sky-700"
           >
             <HiOutlinePencil />
-          </button>
+          </Link>
           <button
             onClick={handleDelete}
             type="button"

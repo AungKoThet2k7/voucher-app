@@ -6,6 +6,7 @@ import SaleForm from "./SaleForm";
 import VoucherTable from "./VoucherTable";
 import useRecordStore from "../stores/useRecordStore";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 lineSpinner.register();
 
 const VoucherInfo = () => {
@@ -20,6 +21,8 @@ const VoucherInfo = () => {
 
   const { records, resetRecords } = useRecordStore();
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     setIsSending(true);
     const total = records.reduce((a, b) => a + b.cost, 0);
@@ -28,7 +31,7 @@ const VoucherInfo = () => {
 
     const currrentVoucher = { ...data, records, total, tax, netTotal };
 
-    await fetch(import.meta.env.VITE_API_URL + "/vouchers", {
+    const res = await fetch(import.meta.env.VITE_API_URL + "/vouchers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +39,13 @@ const VoucherInfo = () => {
       body: JSON.stringify(currrentVoucher),
     });
 
+    const json = await res.json();
+
     toast.success("Voucher created successfully");
+
+    if (data.redirect_voucher_detail) {
+      navigate(`/voucher/detail/${json.id}`);
+    }
 
     resetRecords();
     reset();
@@ -167,8 +176,14 @@ const VoucherInfo = () => {
 
       <VoucherTable />
 
-      <div className="flex justify-end items-center gap-5">
+      <div className="flex flex-col justify-end items-end gap-3">
         <div className="flex items-center gap-2">
+          <label
+            htmlFor="all_correct"
+            className="text-sm font-medium text-gray-900"
+          >
+            Make sure all field are correct
+          </label>
           <input
             {...register("all_correct")}
             id="all_correct"
@@ -178,12 +193,22 @@ const VoucherInfo = () => {
             value=""
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm"
           />
+        </div>
+        <div className="flex items-center gap-2">
           <label
-            htmlFor="all_correct"
+            htmlFor="redirect_voucher_detail"
             className="text-sm font-medium text-gray-900"
           >
-            Make sure all field are correct
+            Redirect to Voucher Detail
           </label>
+          <input
+            {...register("redirect_voucher_detail")}
+            id="redirect_voucher_detail"
+            form="infoForm"
+            type="checkbox"
+            value=""
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm"
+          />
         </div>
         <button
           type="submit"

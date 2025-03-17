@@ -1,6 +1,7 @@
 import React from "react";
 
-const ShowDate = ({ timestamp}) => {
+const ShowDate = ({ timestamp ,hasTime= true}) => {
+  // console.log(timestamp);
   const date = new Date(timestamp);
 
   const currentDate = date.toLocaleDateString("en-GB", {
@@ -13,10 +14,11 @@ const ShowDate = ({ timestamp}) => {
     minute: "2-digit",
     hour12: true,
   });
+  // console.log(date);
   return (
     <div>
       <p>{currentDate}</p>
-      <p>{currentTime}</p>
+      {hasTime && <p>{currentTime}</p>}
     </div>
   );
 };

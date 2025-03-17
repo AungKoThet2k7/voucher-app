@@ -63,29 +63,116 @@
   ],
   "vouchers": [
     {
-      "voucher_id": "INV-163887-8599",
-      "customer_name": "Kyaw Kyaw",
-      "customer_email": "kyaw@gmail.com",
-      "sale_date": "2025-03-14",
+      "voucher_id": "INV-375915-1443",
+      "customer_name": "Su Su",
+      "customer_email": "su@gmail.com",
+      "sale_date": "2025-03-16",
       "all_correct": true,
       "records": [
         {
-          "id": 1741929169425,
+          "id": 1742091384201,
           "product": {
-            "name": "Performance Optimization",
-            "price": "100",
-            "created_at": "2025-03-12T03:37:00.485Z",
-            "id": 1
+            "id": 3,
+            "name": "E-commerce Development",
+            "price": 1200,
+            "created_at": "2025-03-03T09:15:00Z"
           },
-          "quantity": "2",
-          "cost": 200,
-          "created_at": "2025-03-14T05:12:49.425Z"
+          "quantity": "3",
+          "cost": 3600,
+          "created_at": "2025-03-16T02:16:24.201Z"
         }
       ],
-      "total": 200,
-      "tax": 14.000000000000002,
-      "netTotal": 214,
-      "id": 1
+      "total": 3600,
+      "tax": 252.00000000000003,
+      "netTotal": 3852,
+      "id": 3
+    },
+    {
+      "voucher_id": "INV-105965-3141",
+      "customer_name": "Kyaw Kyaw",
+      "customer_email": "kyaw@gmail.com",
+      "sale_date": "2025-03-16",
+      "all_correct": true,
+      "records": [
+        {
+          "id": 1742112110956,
+          "product": {
+            "id": 3,
+            "name": "E-commerce Development",
+            "price": 1200,
+            "created_at": "2025-03-03T09:15:00Z"
+          },
+          "quantity": "2",
+          "cost": 2400,
+          "created_at": "2025-03-16T08:01:50.956Z"
+        },
+        {
+          "id": 1742112112770,
+          "product": {
+            "id": 4,
+            "name": "SEO Optimization Service",
+            "price": 300,
+            "created_at": "2025-03-04T09:30:00Z"
+          },
+          "quantity": "4",
+          "cost": 1200,
+          "created_at": "2025-03-16T08:01:52.770Z"
+        }
+      ],
+      "total": 3600,
+      "tax": 252.00000000000003,
+      "netTotal": 3852,
+      "id": 5
+    },
+    {
+      "voucher_id": "INV-977926-2370",
+      "customer_name": "Aye Aye",
+      "customer_email": "aye@gmail.com",
+      "sale_date": "2025-03-17",
+      "all_correct": true,
+      "redirect_voucher_detail": true,
+      "records": [
+        {
+          "id": 1742190993065,
+          "product": {
+            "id": 2,
+            "name": "Website Design Package",
+            "price": 500,
+            "created_at": "2025-03-02T09:00:00Z"
+          },
+          "quantity": "3",
+          "cost": 1500,
+          "created_at": "2025-03-17T05:56:33.065Z"
+        },
+        {
+          "id": 1742190995009,
+          "product": {
+            "id": 5,
+            "name": "Custom Web Application",
+            "price": 2500,
+            "created_at": "2025-03-05T09:45:00Z"
+          },
+          "quantity": "3",
+          "cost": 7500,
+          "created_at": "2025-03-17T05:56:35.009Z"
+        },
+        {
+          "id": 1742190997537,
+          "product": {
+            "id": 7,
+            "name": "Website Maintenance Plan",
+            "price": 200,
+            "created_at": "2025-03-07T10:15:00Z"
+          },
+          "quantity": "2",
+          "cost": 400,
+          "created_at": "2025-03-17T05:56:37.537Z"
+        }
+      ],
+      "total": 9400,
+      "tax": 658.0000000000001,
+      "netTotal": 10058,
+      "id": 6
     }
   ]
 }

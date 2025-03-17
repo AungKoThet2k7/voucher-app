@@ -10,6 +10,7 @@ import ShowDate from "./showDate";
 lineSpinner.register();
 
 const ProductRow = ({ product: { id, name, price, created_at } }) => {
+  console.log(created_at);
   const { mutate } = useSWRConfig();
 
   const [isDeleting, setIsDeleting] = useState(false);

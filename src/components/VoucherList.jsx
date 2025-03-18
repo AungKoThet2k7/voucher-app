@@ -1,17 +1,33 @@
-import React from "react";
-import { HiOutlineTrash, HiSearch } from "react-icons/hi";
+import React, { useRef, useState } from "react";
+import { HiOutlineTrash, HiSearch, HiX } from "react-icons/hi";
 import { HiOutlinePencil } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import useSWR from "swr";
 import VoucherListRow from "./VoucherListRow";
+import { debounce } from "lodash";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const VoucherList = () => {
+  const [search, setSearch] = useState("");
+
+  const searchInput = useRef("");
+
   const { data, error, isLoading } = useSWR(
-    import.meta.env.VITE_API_URL + "/vouchers",
+    search
+      ? import.meta.env.VITE_API_URL + `/vouchers?voucher_id_like=${search}`
+      : import.meta.env.VITE_API_URL + "/vouchers",
     fetcher
   );
+
+  const handleSearch = debounce((e) => {
+    setSearch(e.target.value);
+  }, 500);
+
+  const handleClearSearch = () => {
+    setSearch("");
+    searchInput.current.value = "";
+  };
 
   return (
     <div>
@@ -21,11 +37,21 @@ const VoucherList = () => {
             <HiSearch className="text-gray-500" />
           </div>
           <input
+            onChange={handleSearch}
+            ref={searchInput}
             type="text"
             id="simple-search"
             className="bg-gray-50 focus-visible:outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full ps-10 p-2.5  "
             placeholder="Search Voucher"
           />
+          {search && (
+            <button
+              onClick={handleClearSearch}
+              className="absolute inset-y-0 end-0 flex items-center pe-3"
+            >
+              <HiX className="text-red-500 active:scale-95 hover:scale-105" />
+            </button>
+          )}
         </div>
         <Link
           to={"/sale"}
@@ -62,10 +88,17 @@ const VoucherList = () => {
                 There is no Voucher yet
               </td>
             </tr>
-            {!isLoading &&
+            {isLoading ? (
+              <tr className="odd:bg-white  even:bg-gray-50  border-b border-gray-200 hidden last:table-row">
+              <td colSpan={5} className="px-6 py-4 text-center">
+                Loading ...
+              </td>
+            </tr>
+            ) : (
               data.map((voucher, index) => (
                 <VoucherListRow key={index} voucher={voucher} />
-              ))}
+              ))
+            )}
           </tbody>
         </table>
       </div>

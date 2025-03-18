@@ -10,7 +10,7 @@ const VoucherTable = () => {
   const netTotal = total + tax;
 
   return (
-    <div className="relative overflow-x-auto shadow-md rounded-lg mb-5">
+    <div className="relative overflow-x-auto shadow-md rounded-lg">
       <table className="w-full text-sm text-left text-gray-500 ">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>

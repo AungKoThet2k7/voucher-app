@@ -12,7 +12,7 @@ const VoucherTableRow = ({
     id,
     quantity,
     cost,
-    product: { name, price },
+    product: { product_name, price },
   },
   index,
 }) => {
@@ -39,7 +39,7 @@ const VoucherTableRow = ({
       >
         {index + 1}
       </th>
-      <td className="px-6 py-4">{name}</td>
+      <td className="px-6 py-4">{product_name}</td>
       <td className="px-6 py-4">{price}</td>
       <td className="px-6 py-4 text-end flex justify-center items-center gap-3">
         <button onClick={decreseQuantity}>

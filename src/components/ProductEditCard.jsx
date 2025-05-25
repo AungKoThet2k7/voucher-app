@@ -6,12 +6,18 @@ import { useForm } from "react-hook-form";
 import { lineSpinner } from "ldrs";
 import toast from "react-hot-toast";
 import useSWR from "swr";
+import useCookie from "react-use-cookie";
 
 lineSpinner.register();
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
 const ProductEditCard = () => {
+  const [token] = useCookie("token");
+
+  const fetcher = (url) =>
+    fetch(url, { headers: { Authorization: `Bearer ${token}` } }).then((res) =>
+      res.json()
+    );
+
   const {
     register,
     handleSubmit,
@@ -30,25 +36,39 @@ const ProductEditCard = () => {
     fetcher
   );
 
-  const handleCreateProduct = async (data) => {
+  if (isLoading) return <div>Loading...</div>;
+
+  console.log(data);
+
+  const productUpdatehandler = async (data) => {
     setIsSending(true);
-    await fetch(import.meta.env.VITE_API_URL + "/products/" + id, {
+    const res = await fetch(import.meta.env.VITE_API_URL + "/products/" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        name: data.name,
+        product_name: data.product_name,
         price: data.price,
         created_at: new Date().toISOString(),
       }),
     });
+
+    const json = await res.json();
+
     setIsSending(false);
 
     if (data.back_to_product) {
-      navigate("/product");
+      navigate("/dashboard/product");
     }
-    toast.success("Product update successfully");
+
+    if (res.status === 200) {
+      toast.success(json.message);
+      reset();
+    } else {
+      toast.error(json.message);
+    }
     // console.log(data);
   };
   return (
@@ -88,7 +108,7 @@ const ProductEditCard = () => {
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit(handleCreateProduct)}>
+            <form onSubmit={handleSubmit(productUpdatehandler)}>
               <div className="mb-3">
                 <label
                   htmlFor="product_name"
@@ -97,12 +117,12 @@ const ProductEditCard = () => {
                   Product Name
                 </label>
                 <input
-                  {...register("name", {
+                  {...register("product_name", {
                     required: true,
                     minLength: 3,
                     maxLength: 30,
                   })}
-                  defaultValue={data.name}
+                  defaultValue={data?.data?.product_name}
                   type="text"
                   id="product_name"
                   className={`bg-gray-50 border ${
@@ -142,7 +162,7 @@ const ProductEditCard = () => {
                     min: 100,
                     max: 10000,
                   })}
-                  defaultValue={data.price}
+                  defaultValue={data?.data?.price}
                   type="number"
                   id="product_price"
                   className={`bg-gray-50 border ${
@@ -201,13 +221,13 @@ const ProductEditCard = () => {
                   htmlFor="back_to_product"
                   className="text-sm font-medium text-gray-900"
                 >
-                  Back to product module after created
+                  Back to product module after updated
                 </label>
               </div>
 
               <div className="flex gap-3">
                 <Link
-                  to={"/product"}
+                  to={"/dashboard/product"}
                   className="px-4 py-2  text-sm font-medium text-sky-500 bg-white rounded-lg border border-sky-500 hover:bg-sky-700 hover:text-white"
                 >
                   Cancel

@@ -7,7 +7,7 @@ const VoucherTable = () => {
 
   const total = records.reduce((a, b) => a + b.cost, 0);
   const tax = total * 0.07;
-  const netTotal = total + tax;
+  const net_total = total + tax;
 
   return (
     <div className="relative overflow-x-auto shadow-md rounded-lg">
@@ -86,7 +86,7 @@ const VoucherTable = () => {
               Net Total
             </th>
             <td className="px-6 py-4 text-end" id="recordNetTotal">
-              {netTotal.toFixed(2)}
+              {net_total.toFixed(2)}
             </td>
           </tr>
         </tfoot>

@@ -6,11 +6,14 @@ import toast from "react-hot-toast";
 import { useSWRConfig } from "swr";
 import { Link } from "react-router-dom";
 import { TbListDetails } from "react-icons/tb";
+import useCookie from "react-use-cookie";
 lineSpinner.register();
 
 const VoucherListRow = ({
-  voucher: { id, voucher_id, customer_name, customer_email, sale_date },
+  voucher: { id, voucher_id, customer_name, customer_email, total, created_at, sale_date },
 }) => {
+  const [token] = useCookie("token");
+
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { mutate } = useSWRConfig();
@@ -19,13 +22,21 @@ const VoucherListRow = ({
     if (confirm("Are you sure you want to delete this voucher?")) {
       setIsDeleting(true);
 
-      await fetch(import.meta.env.VITE_API_URL + `/vouchers/${id}`, {
+      const res = await fetch(import.meta.env.VITE_API_URL + `/vouchers/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      toast.success("Product deleted successfully");
+      const json = await res.json();
 
-      mutate(import.meta.env.VITE_API_URL + "/vouchers");
+      if(res.status === 200) {
+        toast.success(json.message);
+        mutate(import.meta.env.VITE_API_URL + "/vouchers");
+      } else {
+        toast.error(json.message);
+      }
 
       setIsDeleting(false);
     }
@@ -36,12 +47,14 @@ const VoucherListRow = ({
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
       >
-        {voucher_id}
+        {id}
       </th>
-      <td className="px-6 py-4">{customer_name}</td>
-      <td className="px-6 py-4">{customer_email}</td>
-      <td className="px-6 py-4 text-end">
-        <ShowDate timestamp={sale_date} hasTime={false} />
+      <td className="px-6 py-4 text-nowrap">{voucher_id}</td>
+      <td className="px-6 py-4 text-nowrap">{customer_name}</td>
+      <td className="px-6 py-4 text-nowrap">{customer_email}</td>
+      <td className="px-6 py-4 text-nowrap text-end">{total}</td>
+      <td className="px-6 py-4 text-nowrap text-end">
+        <ShowDate timestamp={created_at} hasTime={true} />
       </td>
       <td className="px-6 py-4 text-end">
         <div
@@ -49,7 +62,7 @@ const VoucherListRow = ({
           role="group"
         >
           <Link
-            to={`/voucher/detail/${id}`}
+            to={`/dashboard/vouchers/details/${id}`}
             type="button"
             className="size-8 flex justify-center items-center text-sm font-medium text-sky-500 bg-white hover:bg-gray-200 hover:text-sky-700"
           >

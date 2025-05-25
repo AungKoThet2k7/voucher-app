@@ -2,12 +2,21 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import useRecordStore from "../stores/useRecordStore";
+import useCookie from "react-use-cookie";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const SaleForm = () => {
+
+   const [token] = useCookie("token");
+
+  const fetcher = (url) =>
+    fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    }).then((res) => res.json());
+
   const { data, isLoading, error } = useSWR(
-    import.meta.env.VITE_API_URL + "/products",
+    import.meta.env.VITE_API_URL + "/products?limit=100",
     fetcher
   );
 
@@ -31,6 +40,7 @@ const SaleForm = () => {
     } else {
       addRecord({
         id: Date.now(),
+        product_id: currentProductId,
         product: currentProduct,
         quantity: data.quantity,
         cost: currentProduct.price * data.quantity,
@@ -65,9 +75,9 @@ const SaleForm = () => {
             {isLoading ? (
               <option>Loading...</option>
             ) : (
-              data.map((product) => (
+              data?.data?.map((product) => (
                 <option key={product.id} value={JSON.stringify(product)}>
-                  {product.name}
+                  {product.product_name}
                 </option>
               ))
             )}

@@ -6,7 +6,7 @@ import VoucherDetailCard from "../components/VoucherDetailCard";
 const VoucherDetailPage = () => {
   return <section>
     <Container>
-      <Breadcrumb currentpageTitle={"Voucher Detail"} links={[{ title: "Voucher Module", path: "/voucher" }]} />
+      <Breadcrumb currentpageTitle={"Voucher Detail"} links={[{ title: "Voucher Module", path: "/dashboard/voucher" }]} />
       <VoucherDetailCard />
     </Container>
   </section>;

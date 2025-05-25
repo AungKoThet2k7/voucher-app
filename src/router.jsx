@@ -8,40 +8,80 @@ import VoucherPage from "./pages/VoucherPage";
 import ProductCreatePage from "./pages/ProductCreatePage";
 import ProductEditPage from "./pages/ProductEditPage";
 import VoucherDetailPage from "./pages/VoucherDetailPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import UserProfilePage from "./pages/UserProfilePage";
+import UserProfileChangeNamePage from "./pages/UserProfileChangeNamePage";
+import UserProfileChangePasswordPage from "./pages/UserProfileChangePasswordPage";
+import UserProfileChangeImagePage from "./pages/UserProfileChangeImagePage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
-        element: <DashboardPage />,
+        index: true,
+        element: <LoginPage />,
       },
       {
-        path: "/product",
-        element: <ProductPage />,
+        path: "/register",
+        element: <RegisterPage />,
       },
       {
-        path: "/product/create",
-        element: <ProductCreatePage />,
-      },
-      {
-        path: "/product/edit/:id",
-        element: <ProductEditPage />,
-      },
-      {
-        path: "/sale",
-        element: <SalePage />,
-      },
-      {
-        path: "/voucher",
-        element: <VoucherPage />,
-      },
-      {
-        path: "/voucher/detail/:id",
-        element: <VoucherDetailPage />,
+        path: "/dashboard",
+        element: <Layout />,
+        children: [
+          {
+            index: true,
+            element: <DashboardPage />,
+          },
+          {
+            path: "product",
+            element: <ProductPage />,
+          },
+          {
+            path: "product/create",
+            element: <ProductCreatePage />,
+          },
+          {
+            path: "product/edit/:id",
+            element: <ProductEditPage />,
+          },
+          {
+            path: "sale",
+            element: <SalePage />,
+          },
+          {
+            path: "voucher",
+            element: <VoucherPage />,
+          },
+          {
+            path: "vouchers/details/:id",
+            element: <VoucherDetailPage />,
+          },
+          {
+            path: "user-profile",
+            children: [
+              {
+                index: true,
+                element: <UserProfilePage />,
+              },
+              {
+                path: "change-name",
+                element: <UserProfileChangeNamePage />,
+              },
+              {
+                path: "change-password",
+                element: <UserProfileChangePasswordPage />,
+              },
+              {
+                path: "change-profile-image",
+                element: <UserProfileChangeImagePage />,
+              },
+            ],
+          },
+        ],
       },
     ],
   },

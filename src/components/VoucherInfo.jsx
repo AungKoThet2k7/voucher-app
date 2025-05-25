@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-
 import { lineSpinner } from "ldrs";
 import SaleForm from "./SaleForm";
 import VoucherTable from "./VoucherTable";
 import useRecordStore from "../stores/useRecordStore";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useCookie from "react-use-cookie";
+
 lineSpinner.register();
 
 const VoucherInfo = () => {
+  const [token] = useCookie("token");
+
   const {
     register,
     handleSubmit,
@@ -27,25 +30,31 @@ const VoucherInfo = () => {
     setIsSending(true);
     const total = records.reduce((a, b) => a + b.cost, 0);
     const tax = total * 0.07;
-    const netTotal = total + tax;
+    const net_total = total + tax;
 
-    const currrentVoucher = { ...data, records, total, tax, netTotal };
+    const currrentVoucher = { ...data, records, total, tax, net_total };
 
     const res = await fetch(import.meta.env.VITE_API_URL + "/vouchers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(currrentVoucher),
     });
 
     const json = await res.json();
 
-    toast.success("Voucher created successfully");
+    if (res.status === 200 || res.status === 201) {
+      toast.success(json.message);
+      
+    } else {
+      toast.error(json.message);
+    }
 
     if (data.redirect_voucher_detail) {
-      navigate(`/voucher/detail/${json.id}`);
-    }
+        navigate(`/dashboard/vouchers/details/${json.data.id}`);
+      }
 
     resetRecords();
     reset();
@@ -68,7 +77,11 @@ const VoucherInfo = () => {
         <VoucherTable />
       </div>
       <div className="col-span-1">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col h-full" id="infoForm">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col h-full"
+          id="infoForm"
+        >
           <div className="grid grid-cols-1 gap-5">
             <div className="col-span-1">
               <div className="">

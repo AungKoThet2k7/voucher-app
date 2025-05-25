@@ -5,10 +5,13 @@ import { useForm } from "react-hook-form";
 
 import { lineSpinner } from "ldrs";
 import toast from "react-hot-toast";
+import useCookie from "react-use-cookie";
 
 lineSpinner.register();
 
 const ProductCreateCard = () => {
+  const [token] = useCookie("token");
+
   const {
     register,
     handleSubmit,
@@ -22,25 +25,34 @@ const ProductCreateCard = () => {
 
   const handleCreateProduct = async (data) => {
     setIsSending(true);
-    await fetch(import.meta.env.VITE_API_URL + "/products", {
+    const res = await fetch(import.meta.env.VITE_API_URL + "/products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        name: data.name,
+        product_name: data.product_name,
         price: data.price,
         created_at: new Date().toISOString(),
       }),
     });
+
+    const json = await res.json();
+
     setIsSending(false);
 
     if (data.back_to_product) {
-      navigate("/product");
+      navigate("/dashboard/product");
     }
 
-    reset();
-    toast.success("Product created successfully");
+    if (res.status === 200 || res.status === 201) {
+      toast.success(json.message);
+      reset();
+    } else {
+      toast.error(json.message);
+    }
     // console.log(data);
   };
   return (
@@ -61,7 +73,7 @@ const ProductCreateCard = () => {
                 Product Name
               </label>
               <input
-                {...register("name", {
+                {...register("product_name", {
                   required: true,
                   minLength: 3,
                   maxLength: 30,
@@ -69,23 +81,23 @@ const ProductCreateCard = () => {
                 type="text"
                 id="product_name"
                 className={`bg-gray-50 border ${
-                  errors.name ? "border-red-500" : "border-gray-300"
+                  errors.product_name ? "border-red-500" : "border-gray-300"
                 } text-gray-900 text-sm rounded-lg block w-full p-2.5 focus-visible:outline-none`}
                 placeholder="eg: Apple"
               />
-              {errors.name?.type === "required" && (
+              {errors.product_name?.type === "required" && (
                 <p className="mt-2 text-sm text-red-600">
                   Product name is required
                 </p>
               )}
 
-              {errors.name?.type === "minLength" && (
+              {errors.product_name?.type === "minLength" && (
                 <p className="mt-2 text-sm text-red-600">
                   Product name must be greater than 3 characters
                 </p>
               )}
 
-              {errors.name?.type === "maxLength" && (
+              {errors.product_name?.type === "maxLength" && (
                 <p className="mt-2 text-sm text-red-600">
                   Product name must be less than 20 characters
                 </p>
@@ -154,7 +166,7 @@ const ProductCreateCard = () => {
 
             <div className="flex items-center gap-2 mb-3">
               <input
-                {...register("back_to_product", { required: true })}
+                {...register("back_to_product")}
                 id="back_to_product"
                 type="checkbox"
                 defaultValue
@@ -170,7 +182,7 @@ const ProductCreateCard = () => {
 
             <div className="flex gap-3">
               <Link
-                to={"/product"}
+                to={"/dashboard/product"}
                 className="px-4 py-2  text-sm font-medium text-sky-500 bg-white rounded-lg border border-sky-500 hover:bg-sky-700 hover:text-white"
               >
                 Cancel

@@ -15,7 +15,7 @@ const Breadcrumb = ({ currentpageTitle, links }) => {
         <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
           <li className="inline-flex items-center">
             <Link
-              to={"/"}
+              to={"/dashboard"}
               className="inline-flex  hover:text-sky-500 items-center text-sm font-medium text-gray-400"
             >
               <HiMiniHome className="me-2" />
